@@ -21,6 +21,11 @@
             <el-descriptions-item label="电话号码"> {{ person.phonenumber ? person.phonenumber : "暂无" }}
             </el-descriptions-item>
             <el-descriptions-item label="状态"> {{ status }} </el-descriptions-item>
+            <el-descriptions-item label="个人标签">
+                <el-tag :key="tag" v-for="tag of person.tags" :disable-transitions="false">
+                    {{ tag }}
+                </el-tag>
+            </el-descriptions-item>
         </el-descriptions>
         <el-drawer title="信息编辑" :before-close="handleClose" :visible.sync="showDialog" direction="rtl"
             custom-class="demo-drawer" ref="drawer">
@@ -51,6 +56,11 @@
                     </el-form-item>
                     <el-form-item label="电话号码" :label-width="formLabelWidth" prop="phonenumber">
                         <el-input v-model="personEdit.phonenumber"></el-input>
+                    </el-form-item>
+                    <el-form-item label="标签" :label-width="formLabelWidth" prop="phonenumber">
+                        <el-select v-model="personEdit.tag" multiple style="margin-left: 20px;" placeholder="请选择">
+                            <el-option v-for="item of tagOption" :key="item.id" :label="item.tagName" :value="item.id"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
                 <div class="drawer-footer">
@@ -141,7 +151,8 @@ export default {
                     { pattern: /^1\d{10}$/, message: '请输入正确的11位电话号码', trigger: ['blur', 'change'] }
 
                 ]
-            }
+            },
+            tagOption: []
         }
     },
     methods: {
@@ -149,7 +160,7 @@ export default {
             this.$axios.get('system/user/profile').then((res) => {
                 if (res.data.code == 200) {
                     this.person = res.data.data;
-                    console.log( "头像",this.person.avatar);
+                    console.log("头像", this.person.avatar);
                     if (this.person.avatar) {
                         this.person.avatar = window.API_BASE_URL + this.person.avatar.substring(1)
                     }
@@ -237,9 +248,20 @@ export default {
                 type: 'success'
             });
         },
+        getTag() {
+            let that = this;
+            this.$axios.get("system/TagInformation/list")
+                .then((res) => {
+                    console.log('标签', res.data);
+                    that.tagOption = res.data.rows
+                }).catch((e) => {
+                    console.log(e);
+                })
+        }
     },
     mounted() {
         this.getUserInfo()
+        this.getTag()
     },
 }
 </script>

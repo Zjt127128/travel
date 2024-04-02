@@ -33,6 +33,62 @@
         <div class="part_bottom">
             <div class="glList">
                 <div class="part_bottom">
+                    <div class="diary_title">热门攻略<i class="el-icon-sunny"  style="color: red;"></i></div>
+                    <div class="share_area">
+                        <div class="share_item" v-for="(item, index) in hotGl" :key="index" @click="goTodetial(item)">
+                            <div class="share_top">
+                                <img :src="'http://4h6p310736.vicp.fun' + item.headImg" alt="" class="userHead" />
+                                <div class="user_info">
+                                    <div class="firt_line">
+                                        <span class="share_title">{{ item.title }}</span>
+                                        <div class="tag1_back" v-if="item.tag1"></div>
+                                    </div>
+                                    <div class="second_line">
+                                        <div class="second_left">
+                                            <span class="nickname">{{ item.author }}</span>
+                                            <div class="tag2_back" v-if="item.tag1"></div>
+                                            <div class="go_date">
+                                                <span class="date_detail">{{ item.goDate }}</span><span>出发</span>
+                                            </div>
+                                            <span class="split">|</span>
+                                            <div>共{{ item.totalDate }}天</div>
+                                        </div>
+                                        <div class="secont_right">
+                                            <div class="interact">
+                                                <i class="iconfont el-icon-wallet"></i>{{ item.readCount }}
+                                            </div>
+                                            <!-- <div class="interact">
+                                            <i class="iconfont icon-dianzan"></i>{{ item.great }}
+                                        </div> -->
+                                            <!-- <div class="interact">
+                                            <i class="iconfont icon-31pinglun"></i>{{ item.comment }}
+                                        </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="share_main">
+                                <div class="route_info" v-if="item.duringBegin && item.duringEnd">
+                                    <span class="rout_type">途经：</span><span>{{ item.duringBegin }}</span><span
+                                        class="arrow_right">></span><span>{{ item.duringEnd }}</span>
+                                </div>
+                                <div class="route_info" v-if="item.eventBegin && item.eventEnd">
+                                    <span class="rout_type">行程：</span><span>{{ item.eventBegin }}</span><span
+                                        class="arrow_right">></span><span>{{ item.eventEnd }}</span>
+                                </div>
+                                <div class="share_img">
+                                    <img v-for="(e, i) in item.imgLists" :src="'http://4h6p310736.vicp.fun' + e" alt=""
+                                        :key="i" style="width: 200px; height: 150px; margin-right: 5px" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="part_bottom">
+            <div class="glList">
+                <div class="part_bottom">
                     <div class="diary_title">攻略日记</div>
                     <div class="diary_bar">
                         <div class="destination">城市</div>
@@ -136,30 +192,30 @@ export default {
                 // }
             },
             swiperList: [
-                {
-                    imgUrl:
-                        "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/9949b04568e4e221516acec29cc780fe.jpg",
-                    adminHead:
-                        "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
-                    expressText: "成都周边游，探索隐匿在城南的千年古城",
-                    adminName: "去哪儿用户",
-                },
-                {
-                    imgUrl:
-                        "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/10cdefaa17898344fa7c660a70e9e499.jpg",
-                    adminHead:
-                        "https://qcommons.qunar.com/headshot/headshotsById/232093830.png?s&ssl=true",
-                    expressText: "湖北多城露营记，去山野中找寻春天的色彩",
-                    adminName: "北小欧",
-                },
-                {
-                    imgUrl:
-                        "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/ab17f71582d3c98bbbec75fe72001fa1.jpg",
-                    adminHead:
-                        "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
-                    expressText: "丛林秘境与天空之城——美丽而神秘的秘鲁",
-                    adminName: "贺贺",
-                },
+                // {
+                //     imgUrl:
+                //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/9949b04568e4e221516acec29cc780fe.jpg",
+                //     adminHead:
+                //         "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
+                //     expressText: "成都周边游，探索隐匿在城南的千年古城",
+                //     adminName: "去哪儿用户",
+                // },
+                // {
+                //     imgUrl:
+                //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/10cdefaa17898344fa7c660a70e9e499.jpg",
+                //     adminHead:
+                //         "https://qcommons.qunar.com/headshot/headshotsById/232093830.png?s&ssl=true",
+                //     expressText: "湖北多城露营记，去山野中找寻春天的色彩",
+                //     adminName: "北小欧",
+                // },
+                // {
+                //     imgUrl:
+                //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/ab17f71582d3c98bbbec75fe72001fa1.jpg",
+                //     adminHead:
+                //         "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
+                //     expressText: "丛林秘境与天空之城——美丽而神秘的秘鲁",
+                //     adminName: "贺贺",
+                // },
             ],
             top2BarList: [
                 { itemName: "首页", skipUrl: "", color: "#3c3c3c" },
@@ -184,6 +240,8 @@ export default {
             total:0,
             pageSize:10,
             pageNum:1,
+            hotGl:[]
+
         };
     },
     methods: {
@@ -277,6 +335,24 @@ export default {
         // 搜索框事件
         searchGl(data){
             this.getGlList(undefined,data)
+        },
+        getHotGl(){
+            let that = this;
+            this.$axios.get("system/information/getCountList", null).then((res)=>{
+                console.log('热门攻略：',res.data);
+                that.hotGl = res.data.rows;
+                let imgUri = [];
+                for (let index in that.hotGl) {
+                    let data = {}
+                    if(index < 3){
+                        data.imgUrl = window.API_BASE_URL.substring(0,window.API_BASE_URL.length -1) + that.hotGl[index].attractionsUrl;
+                        imgUri.push(data)
+                    }
+                }
+                that.swiperList = imgUri;
+            }).catch((e)=>{
+                console.log(e);
+            })
         }
     },
     computed: {
@@ -287,6 +363,7 @@ export default {
     mounted() {
         this.getGlList()
         this.getCity();
+        this.getHotGl();
     },
 };
 </script>
@@ -359,8 +436,11 @@ export default {
 
 .diary_title {
     font-size: 28px;
-    margin-left: 325px;
+    /* margin:  auto; */
     margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
 }
 
 .recommand {

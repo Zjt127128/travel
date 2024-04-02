@@ -15,8 +15,8 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'index',
-            component: index
+            name: 'glIndex',
+            component: glIndex
         },
         {
             path: '/login',
@@ -51,7 +51,7 @@ export default new Router({
             name: 'glIndex',
             component: glIndex,
             meta: {
-                requiresAuth: true // 标记为需要登录才能访问
+                // requiresAuth: true // 标记为需要登录才能访问
             }
         },
       {
