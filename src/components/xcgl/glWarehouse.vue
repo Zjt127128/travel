@@ -2,7 +2,7 @@
     <div>
         <div>
             <zjtHeader />
-            <indexTitle />
+            <indexTitle :colorIndex="1"/>
         </div>
         <div class="searchContent">
             <el-input placeholder="搜攻略" v-model="searchInpt" class="input-with-select">
@@ -123,6 +123,7 @@ export default {
           path: '/strategyDetail',
           query: {
             id: item.strategyId,
+            userId: item.userId
           }
         });
       },

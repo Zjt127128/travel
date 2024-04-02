@@ -32,16 +32,18 @@ axiosInstance.interceptors.request.use(
   },
   error => Promise.reject(error)
 );
-axios.interceptors.response.use(
-  response => response,
-  error => {
-    if (error.response && error.response.code === 401) { // 检查是否为401 Unauthorized错误
+axiosInstance.interceptors.response.use(
+  response => {
+    if(response&&response.data&&response.data.code&&response.data.code=='401'){
       // 清除存在的token信息
       localStorage.removeItem('accessToken');
       // 跳转到登录页面
       router.push({ name: 'login' });
+    }else{
+      return Promise.resolve(response)
     }
-
+  },
+  error => {
     return Promise.reject(error);
   }
 );

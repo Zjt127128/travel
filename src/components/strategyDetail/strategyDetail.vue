@@ -28,6 +28,18 @@
               <div class="read">
                 <span class="read_type">浏览</span><span>{{ browseNum }}</span>
               </div>
+              <div class="collect_area">
+                <div class="strategy_collect">
+                  <img src="@/assets/strategyDetial/nocollect.png" v-if="!isCollectStra" @click="collectStrategy()">
+                  <img src="@/assets/strategyDetial/collect.png" v-if="isCollectStra" @click="deleteCollectStrategy()">
+                  <span>攻略收藏</span>
+                </div>
+                <div class="place_cllect">
+                  <img src="@/assets/strategyDetial/nocollect.png" v-if="!isCollectPlace" @click="collectPlace()">
+                  <img src="@/assets/strategyDetial/collect.png" v-if="isCollectPlace" @click="deleteCollectPlace()">
+                  <span>景点收藏</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -70,20 +82,24 @@
           <div class="hotel_content">
             <div class="trip_title">推荐酒店</div>
             <div class="split_row"></div>
-            <div class="hotel_deac">
-              <img :src="hotelImg" alt="" />
-              <div class="hotel_name">
-                <div class="name1">{{ hotelName }}</div>
-                <div class="hotel_price">{{ hotelPrice }}</div>
-              </div>
-            </div>
             <div class="hotel_rate">
               <span>推荐指数：</span>
               <el-rate v-model="hotelRate" disabled></el-rate>
+              <span class="name1">{{ hotelName }}</span>
+              <span class="hotel_price">{{ hotelPrice }}</span>
+            </div>
+            <div class="hotel_name">
+
+            </div>
+            <div class="hotel_deac">
+              <img :src="hotelImg" alt="" />
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div class="comment_wrapper">
+      <comment-list :strategyId="$route.query.id"></comment-list>
     </div>
   </div>
 </template>
@@ -92,8 +108,9 @@ import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/css/swiper.css";
 import zjtHeader from "@/components/header/header.vue";
 import indexTitle from "@/components/index/title/indexTitle.vue";
+import commentList from "@/components/commentList/commentList.vue";
 export default {
-  components: { swiper, swiperSlide, zjtHeader, indexTitle },
+  components: { swiper, swiperSlide, zjtHeader, indexTitle, commentList},
   data() {
     return {
       swiperOption: {
@@ -132,8 +149,11 @@ export default {
       hotelPrice: "",
       hotelRate: "",
       isvideo: '',
-      video: ''
-
+      video: '',
+      userId: '',
+      isCollectStra: false,
+      isCollectPlace: false,
+      attractionsUrl: '',
     };
   },
 
@@ -153,6 +173,7 @@ export default {
           this.authName = detailInfo.nickname;
           this.createTime = detailInfo.goDate;
           this.browseNum = detailInfo.readCount;
+          this.attractionsUrl = detailInfo.attractionsUrl;
           this.topImgSrc = this.commonImgUrl + detailInfo.cityUrl;
           this.totalDate = detailInfo.totalDate;
           this.recommendTrip = detailInfo.content;
@@ -161,16 +182,131 @@ export default {
           this.hotelRate = detailInfo.recommendationIndex;
           this.isvideo = detailInfo.isVideo
           this.video = detailInfo.video
+          this.userId = detailInfo.userId
           if (detailInfo.hotelPrice && detailInfo.hotelPrice != "") {
             this.hotelPrice = detailInfo.hotelPrice + "元";
           } else {
             this.hotelPrice = "暂无报价";
           }
+        }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: '获取攻略详情失败！'
         });
+      });;
+    },
+    queryCollectPlace(){
+      let param={
+        userId: this.$route.query.userId
+      }
+      this.$axios
+        .get("/system/attractions/list", param, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            res.data.rows.forEach(item=>{
+              if(item.strategyId == this.$route.query.id){
+                this.isCollectPlace = true
+              }
+            })
+          }
+        }).catch(error=>{
+        this.$notify.error({
+          title: '错误',
+          message: '查询景点收藏失败！'
+        });
+      })
+    },
+    queryCollectStategy(){
+      let param={
+        userId: this.$route.query.userId
+      }
+      this.$axios
+        .get("/system/strategy/list", param, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            res.data.rows.forEach(item=>{
+              if(item.strategyId == this.$route.query.id){
+                this.isCollectStra = true
+              }
+            })
+          }
+        }).catch(error=>{
+        this.$notify.error({
+          title: '错误',
+          message: '查询攻略收藏失败！'
+        });
+      })
+    },
+    collectStrategy(){
+      let param = {
+        userId: this.$route.query.userId,
+        strategyId: this.$route.query.id
+      }
+      this.$axios
+        .post("/system/strategy", param, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            this.isCollectStra = true
+          }
+        }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: '收藏失败！'
+        });
+      });
+    },
+    collectPlace(){
+      let param = {
+        attractions:this.recommandSpot,
+        attractionsUrl: this.attractionsUrl,
+        strategyId:this.$route.query.id,
+      }
+      this.$axios
+        .post("/system/attractions", param, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            this.isCollectPlace = true
+          }
+        }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: '收藏失败！'
+        });
+      });
+    },
+    deleteCollectStrategy(){
+      this.$axios
+        .delete("/system/strategy/"+this.$route.query.id,null, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            this.isCollectStra = false
+          }
+        }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: '取消收藏失败！'
+        });
+      });
+    },
+    deleteCollectPlace(){
+      this.$axios
+        .delete("/system/attractions/"+this.$route.query.id, null, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            this.isCollectPlace = false
+          }
+        }).catch((error) => {
+        this.$notify.error({
+          title: '错误',
+          message: '取消收藏失败！'
+        });
+      });
     },
   },
   mounted() {
     this.queryDetail();
+    this.queryCollectPlace()
+    this.queryCollectStategy()
   },
 };
 </script>
@@ -199,6 +335,24 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+.collect_area{
+  width: 200px;
+  left: 400px;
+  bottom: 10px;
+  display: flex;
+  position: absolute;
+}
+.strategy_collect img,.place_cllect img{
+  width: 25px;
+  margin-right: 5px;
+}
+.strategy_collect,.place_cllect{
+  display: flex;
+  align-items: center;
+}
+.strategy_collect{
+  margin-right: 20px;
+}
 .auth_head {
   margin-right: 20px;
 }
@@ -215,6 +369,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
 }
 .auth_info {
   position: relative;
@@ -314,28 +469,30 @@ export default {
   height: 261px;
 }
 .hotel_deac img {
-  width: 235px;
-  height: 175px;
+  width: 680px;
 }
 
 .hotel_name {
-  width: 233px;
-  height: 60px;
-  border: 1px solid #e0e0e0;
   margin-top: -4px;
 }
 .name1 {
+  margin-left: 50px;
   font: 16px / 30px "microsoft yahei";
-  padding: 6px 0 0 10px;
   color: #333;
 }
 .hotel_price {
   color: #919090;
-  font-size: 12px;
+  font-size: 16px;
   padding-left: 10px;
 }
 .hotel_rate{
+  width: 680px;
   display: flex;
-  margin-top: 10px;
+  margin: 20px 0;
+  align-items: center;
+}
+.comment_wrapper{
+  margin: 0 100px;
+  margin-top: 400px;
 }
 </style>
