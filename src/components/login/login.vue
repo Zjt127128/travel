@@ -1,6 +1,7 @@
 <template>
-    <div>
+    <div style="position: relative;width: 100%;height: 100%">
         <zjtHeader />
+      <img src="@/assets/login/background.png" style="width: 100%;height: 100%">
         <div class="loginDiv">
             <div class="loginBox">
                 <div class="loginTitle">
@@ -150,13 +151,16 @@ export default {
     justify-content: center;
     align-items: center;
     /* 为了水平和垂直居中，假设内容是flexible的 */
-    margin-top: 200px;
+  position: absolute;
+  bottom: 300px;
+  left: 700px;
+
 }
 
 .loginBox {
     width: 600px;
     height: 550px;
-    background-color: rgba(200, 200, 200, 0.5);
+    background-color: rgba(200, 200, 200, 0.2);
 }
 
 .loginTitle {

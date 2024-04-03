@@ -14,7 +14,7 @@
                     class="top_hover_class" @click="logout">注销</span></span>
             <span class="firt_level" v-else>请<span style="color: #0084bb; margin: 0 5px" class="top_hover_class"
                     @click="goLogin()">登录</span>或<span style="color: #00bcd4; margin-left: 5px"
-                    class="top_hover_class">免费注册</span></span>
+                    class="top_hover_class" @click="toReg()">免费注册</span></span>
             <span class="firt_level top_hover_class">消息</span>
             <span class="firt_level top_hover_class">查看订单</span>
             <span class="firt_level top_hover_class">积分商城</span>
@@ -69,6 +69,11 @@ export default {
                 path: '/login'
             });
         },
+      toReg(){
+        this.$router.push({
+          path: '/register'
+        });
+      },
         goHome() {
             this.$router.push({
                 path: '/'
@@ -107,7 +112,7 @@ export default {
                     console.log(res.data.data);
                     if (res.data.code == 200) {
                         that.userInfo = res.data.data
-    
+
                     }
                 }).catch((error) => {
                     console.log(error);
