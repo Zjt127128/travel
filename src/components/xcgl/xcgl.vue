@@ -54,7 +54,14 @@
         </el-form-item>
 
         <el-form-item label="攻略标签" prop="tag">
-          <el-input v-model="form.tag" placeholder="请输入攻略标签" />
+          <el-select v-model="form.tag" placeholder="请输入攻略标签">
+            <el-option
+              v-for="item in tagList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="出发时间" prop="goDate">
           <el-date-picker clearable
@@ -75,6 +82,9 @@
         </el-form-item>
         <el-form-item label="图片" prop="imgList">
           <image-upload v-model="form.imgList"/>
+        </el-form-item>
+        <el-form-item label="景点图片" prop="attractionsUrl">
+          <image-upload v-model="form.attractionsUrl"/>
         </el-form-item>
       </el-form>
     </div>
@@ -104,6 +114,7 @@ export default {
   },
   data() {
     return {
+      tagList:[],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -146,6 +157,7 @@ export default {
   },
   created() {
     this.queryCityList()
+    this.queryTagList()
   },
   methods: {
     handleFileChange(event) {
@@ -185,6 +197,11 @@ export default {
       this.$refs["form"].validate(valid => {
         console.log(this.form)
         if (valid) {
+          if (this.form.isVideo){
+            this.form.isVideo = 1
+          }else {
+            this.form.isVideo = 0
+          }
           this.$axios.post('/system/information',this.form,{}).then(res=>{
             console.log(res)
           })
@@ -203,6 +220,22 @@ export default {
                 label: item.sortName
               }
               that.cityList.push(param)
+            })
+          }
+        })
+    },
+    queryTagList(){
+      let that = this
+      this.$axios
+        .get("/system/TagInformation/list", null, {})
+        .then((res) => {
+          if(res&&res.data&&res.data.code&&res.data.code=='200'){
+            res.data.rows.forEach((item)=>{
+              let param = {
+                value: item.id,
+                label: item.tagName
+              }
+              that.tagList.push(param)
             })
           }
         })

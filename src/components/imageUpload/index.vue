@@ -75,7 +75,7 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       hideUpload: false,
-      baseUrl: process.env.VUE_APP_BASE_API,
+      baseUrl: "http://4h6p310736.vicp.fun",
       uploadImgUrl:  "http://4h6p310736.vicp.fun/common/upload", // 上传的图片服务器地址
       fileList: [],
       headers: {}
@@ -200,7 +200,7 @@ export default {
     },
     // 预览
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
+      this.dialogImageUrl = "http://4h6p310736.vicp.fun"+file.url;
       this.dialogVisible = true;
     },
     // 对象转成指定字符串分隔
