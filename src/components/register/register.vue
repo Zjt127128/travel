@@ -161,8 +161,9 @@ export default {
     align-items: center;
     /* 为了水平和垂直居中，假设内容是flexible的 */
   position: absolute;
-  bottom: 200px;
-  left: 700px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .loginBox {

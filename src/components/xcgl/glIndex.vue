@@ -2,7 +2,7 @@
     <div>
         <zjtHeader></zjtHeader>
         <div class="swiper-main">
-            <indexTitle @searchData="searchGl"/>
+            <indexTitle :colorIndex="1" @searchData="searchGl" />
             <swiper :options="swiperOption" ref="mySwiper">
                 <swiper-slide v-for="(item, index) in swiperList" :key="index">
                     <img :src="item.imgUrl" alt="" />
@@ -426,12 +426,15 @@ export default {
 
 .part_title {
     font-size: 28px;
-    margin-left: 255px;
 }
 
 .part_middle {
     background-color: #f4f4f4;
     padding-bottom: 30px;
+  padding-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .diary_title {
@@ -441,6 +444,7 @@ export default {
     margin-bottom: 40px;
     display: flex;
     justify-content: center;
+  align-items: center;
 }
 
 .recommand {
@@ -503,7 +507,7 @@ export default {
 }
 
 .share_area {
-    margin-left: 325px;
+    //margin-left: 325px;
 }
 
 .share_top {
@@ -605,7 +609,11 @@ export default {
 .share_img {
     margin-top: 10px;
 }
-
+.part_bottom{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .page {
     display: flex;
     justify-content: center;

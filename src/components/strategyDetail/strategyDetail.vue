@@ -193,7 +193,7 @@ export default {
           title: '错误',
           message: '获取攻略详情失败！'
         });
-      });;
+      });
     },
     queryCollectPlace(){
       let param={
