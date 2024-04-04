@@ -206,24 +206,11 @@ export default {
           message: '获取城市列表失败！'
         });
       });
-    },
-    searchGl() {
-      let param = {}
-      if (this.searchInpt){
-        param["title"] = this.searchInpt;
-        param["page"] = this.pageNum;
-        param["limit"] = this.pageSize
-      }
-      this.$axios.post("/system/information/getStrategyInformationListWithAll", param)
-        .then((data) => {
-          console.log(data)
-        })
     }
   },
   mounted() {
     this.getGlList({'page':1,'limit':this.pageSize})
     this.getCity();
-    this.searchGl();
   },
 }
 </script>
