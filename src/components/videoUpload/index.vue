@@ -19,7 +19,7 @@
       <!-- 上传提示 -->
       <div class="el-upload__tip" slot="tip" v-if="showTip">
         请上传
-        <template v-if="fileSize"> 大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>
+<!--        <template v-if="fileSize"> 大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b> </template>-->
         <template v-if="fileType"> 格式为 <b style="color: #f56c6c">{{ fileType.join("/") }}</b> </template>
         的文件
       </div>
@@ -52,14 +52,13 @@ export default {
       default: 5,
     },
     // 大小限制(MB)
-    fileSize: {
-      type: Number,
-      default: 5,
-    },
-    // 文件类型, 例如['png', 'jpg', 'jpeg']
+    // fileSize: {
+    //   type: Number,
+    //   default: 5,
+    // },
     fileType: {
       type: Array,
-      default: () => ["doc", "xls", "ppt", "txt", "pdf"],
+      default: () => ["mp4","MP4"],
     },
     // 是否显示提示
     isShowTip: {
@@ -72,7 +71,7 @@ export default {
       number: 0,
       uploadList: [],
       baseUrl: process.env.VUE_APP_BASE_API,
-      uploadFileUrl: process.env.VUE_APP_BASE_API + "/common/upload", // 上传文件服务器地址
+      uploadFileUrl: "http://4h6p310736.vicp.fun/common/upload", // 上传文件服务器地址
       headers: {
       },
       fileList: [],
@@ -102,10 +101,15 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    this.headers={
+      Authorization: 'Bearer '+window.localStorage.getItem('access_token')
+    }
+  },
   computed: {
     // 是否显示提示
     showTip() {
-      return this.isShowTip && (this.fileType || this.fileSize);
+      return this.isShowTip && (this.fileType);
     },
   },
   methods: {
@@ -117,30 +121,40 @@ export default {
         const fileExt = fileName[fileName.length - 1];
         const isTypeOk = this.fileType.indexOf(fileExt) >= 0;
         if (!isTypeOk) {
-          this.$modal.msgError(`文件格式不正确, 请上传${this.fileType.join("/")}格式文件!`);
+          this.$notify.error({
+            title: '错误',
+            message: `文件格式不正确, 请上传${this.fileType.join("/")}格式文件!`
+          });
           return false;
         }
       }
       // 校检文件大小
-      if (this.fileSize) {
-        const isLt = file.size / 1024 / 1024 < this.fileSize;
-        if (!isLt) {
-          this.$modal.msgError(`上传文件大小不能超过 ${this.fileSize} MB!`);
-          return false;
-        }
-      }
-      this.$modal.loading("正在上传文件，请稍候...");
+      // if (this.fileSize) {
+      //   const isLt = file.size / 1024 / 1024 < this.fileSize;
+      //   if (!isLt) {
+      //     this.$notify.error({
+      //       title: '错误',
+      //       message: `上传文件大小不能超过 ${this.fileSize} MB!`
+      //     });
+      //     return false;
+      //   }
+      // }
       this.number++;
       return true;
     },
     // 文件个数超出
     handleExceed() {
-      this.$modal.msgError(`上传文件数量不能超过 ${this.limit} 个!`);
+      this.$notify.error({
+        title: '错误',
+        message: `上传文件数量不能超过 ${this.limit} 个!`
+      });
     },
     // 上传失败
     handleUploadError(err) {
-      this.$modal.msgError("上传文件失败，请重试");
-      this.$modal.closeLoading()
+      this.$notify.error({
+        title: '错误',
+        message: `上传文件失败，请重试`
+      });
     },
     // 上传成功回调
     handleUploadSuccess(res, file) {
@@ -149,8 +163,10 @@ export default {
         this.uploadedSuccessfully();
       } else {
         this.number--;
-        this.$modal.closeLoading();
-        this.$modal.msgError(res.msg);
+        this.$notify.error({
+          title: '错误',
+          message: res.msg
+        });
         this.$refs.fileUpload.handleRemove(file);
         this.uploadedSuccessfully();
       }

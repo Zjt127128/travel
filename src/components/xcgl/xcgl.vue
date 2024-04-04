@@ -19,7 +19,7 @@
           <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
         <el-form-item label="vlog视频" prop="video" v-if="form.isVideo == true">
-          <input type="file" ref="videoInput" @change="handleFileChange">
+          <video-upload v-model="form.video"></video-upload>
         </el-form-item>
         <el-form-item label="所推荐城市" prop="city">
           <el-select v-model="form.city" placeholder="请输入所推荐城市">
@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import videoUpload from '@/components/videoUpload/index.vue';
 import editor from '@/components/editor/index.vue';
 import imageUpload from '@/components/imageUpload/index.vue';
 import zjtHeader from '@/components/header/header.vue';
@@ -105,6 +106,7 @@ import {swiper, swiperSlide} from "vue-awesome-swiper";
 export default {
   name: "Information",
   components: {
+    videoUpload,
     editor,
     imageUpload,
     swiper,

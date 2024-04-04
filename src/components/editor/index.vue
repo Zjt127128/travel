@@ -162,14 +162,20 @@ export default {
       const isJPG = type.includes(file.type);
       // 检验文件格式
       if (!isJPG) {
-        this.$message.error(`图片格式错误!`);
+        this.$notify.error({
+          title: '错误',
+          message: `图片格式错误!`
+        });
         return false;
       }
       // 校检文件大小
       if (this.fileSize) {
         const isLt = file.size / 1024 / 1024 < this.fileSize;
         if (!isLt) {
-          this.$message.error(`上传文件大小不能超过 ${this.fileSize} MB!`);
+          this.$notify.error({
+            title: '错误',
+            message: `上传文件大小不能超过 ${this.fileSize} MB!`
+          });
           return false;
         }
       }
@@ -187,11 +193,17 @@ export default {
         // 调整光标到最后
         quill.setSelection(length + 1);
       } else {
-        this.$message.error("图片插入失败");
+        this.$notify.error({
+          title: '错误',
+          message: `图片插入失败`
+        });
       }
     },
     handleUploadError() {
-      this.$message.error("图片插入失败");
+      this.$notify.error({
+        title: '错误',
+        message: `图片插入失败`
+      });
     },
   },
 };

@@ -8,8 +8,8 @@
         <img :src="topImgSrc" alt="" />
         <div class="left_top">
           <span>攻略</span><span class="margin_side">></span
-          ><span>{{ recommendPlace }}</span
-          ><span class="margin_side">></span><span>{{ recommandTitle }}</span>
+        ><span>{{ recommendPlace }}</span
+        ><span class="margin_side">></span><span>{{ recommandTitle }}</span>
         </div>
       </div>
       <div class="content">
@@ -23,7 +23,7 @@
               <div class="auth_name">{{ authName }}</div>
               <div class="create_time">
                 <span>创建于</span><span>{{ createTime }}</span
-                ><span class="split_icon">|</span>
+              ><span class="split_icon">|</span>
               </div>
               <div class="read">
                 <span class="read_type">浏览</span><span>{{ browseNum }}</span>
@@ -51,8 +51,8 @@
                 <span class="box_title">出发日期</span>
                 <span class="split_icon">/</span>
                 <span class="box_content" style="color: #c90">{{
-                  createTime
-                }}</span>
+                    createTime
+                  }}</span>
               </div>
             </div>
             <div class="box_right">
@@ -68,7 +68,9 @@
           <div class="trip_content">
             <div class="trip_title">旅游游记</div>
             <div class="split_row"></div>
-            <div class="content_deac" v-html="recommendTrip"></div>
+            <div class="content_deac">
+              <video width="680" height="480" controls :src="videoUrl"></video>
+            </div>
             <div class="content_img">
               <img
                 :src="item"
@@ -109,8 +111,9 @@ import "swiper/css/swiper.css";
 import zjtHeader from "@/components/header/header.vue";
 import indexTitle from "@/components/index/title/indexTitle.vue";
 import commentList from "@/components/commentList/commentList.vue";
+import videoPlayer from "@/components/videoPlayer/videoPlayer.vue";
 export default {
-  components: { swiper, swiperSlide, zjtHeader, indexTitle, commentList},
+  components: { swiper, swiperSlide, zjtHeader, indexTitle, commentList, videoPlayer},
   data() {
     return {
       swiperOption: {
@@ -149,11 +152,11 @@ export default {
       hotelPrice: "",
       hotelRate: "",
       isvideo: '',
-      video: '',
       userId: '',
       isCollectStra: false,
       isCollectPlace: false,
       attractionsUrl: '',
+      videoUrl: ''
     };
   },
 
@@ -181,8 +184,8 @@ export default {
           this.hotelName = detailInfo.hotel;
           this.hotelRate = detailInfo.recommendationIndex;
           this.isvideo = detailInfo.isVideo
-          this.video = detailInfo.video
           this.userId = detailInfo.userId
+          this.videoUrl = this.commonImgUrl + detailInfo.video;
           if (detailInfo.hotelPrice && detailInfo.hotelPrice != "") {
             this.hotelPrice = detailInfo.hotelPrice + "元";
           } else {

@@ -142,17 +142,18 @@ export default {
         });
         return false;
       }
-      if (this.fileSize) {
-        const isLt = file.size / 1024 / 1024 < this.fileSize;
-        if (!isLt) {
-          this.$notify.error({
-            title: '错误',
-            message: `上传头像图片大小不能超过 ${this.fileSize} MB!`
-          });
-          return false;
-        }
-      }
+      // if (this.fileSize) {
+      //   const isLt = file.size / 1024 / 1024 < this.fileSize;
+      //   if (!isLt) {
+      //     this.$notify.error({
+      //       title: '错误',
+      //       message: `上传头像图片大小不能超过 ${this.fileSize} MB!`
+      //     });
+      //     return false;
+      //   }
+      // }
       this.number++;
+      return true
     },
     // 文件个数超出
     handleExceed() {
@@ -168,8 +169,6 @@ export default {
         this.uploadedSuccessfully();
       } else {
         this.number--;
-        this.number--;
-        this.$modal.msgError(res.msg);
         this.$refs.imageUpload.handleRemove(file);
         this.uploadedSuccessfully();
       }
