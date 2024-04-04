@@ -6,7 +6,7 @@
     </div>
     <div class="searchContent">
       <el-input placeholder="搜攻略" v-model="searchInpt" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="searchGl"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="getGlList"></el-button>
       </el-input>
       <div class="glList">
         <div class="part_bottom">
@@ -69,9 +69,15 @@
           </div>
         </div>
         <div class="page">
-          <el-pagination background layout="prev, pager, next" :total="total" @current-change="pageChange">
-          </el-pagination>
-
+<!--          <el-pagination background layout="prev, pager, next" :total="total" @current-change="pageChange">-->
+<!--          </el-pagination>-->
+          <pagination
+            v-show="total>0"
+            :total="total"
+            :page.sync="pageNum"
+            :limit.sync="pageSize"
+            @pagination="getGlList"
+          />
         </div>
       </div>
 
@@ -81,11 +87,14 @@
 <script>
 import zjtHeader from '@/components/header/header.vue';
 import indexTitle from '@/components/index/title/indexTitle.vue';
+import pagination from '@/components/util/pagination.vue';
+
 
 export default {
   components: {
     zjtHeader,
-    indexTitle
+    indexTitle,
+    pagination,
   },
   name: 'xcgl',
   data() {
@@ -94,7 +103,9 @@ export default {
       sizer: [],
       total: 0,
       pageNum: 1,
+      pageSize: 10,
       city: [],
+      cityName: '',
       sizerList: [
         {"quarter": "一季度", "num": "1"},
         {"quarter": "二季度", "num": "2"},
@@ -115,23 +126,36 @@ export default {
         }
       });
     },
-    getGlList(sortName) {
-      var param = {
-        'pageSize': 10,
-        'pageNum': this.pageNum,
+    getGlList(page) {
+      let param = {}
+      if (page){
+        param = page
+      }else {
+        param["page"] = 1;
+        param["limit"] = this.pageSize
       }
-      if (sortName) {
-        param.city = sortName;
+      param['isVideo'] = "0"
+      if (this.cityName && this.cityName != "全部"){
+        param["city"] = this.cityName;
+      }
+      if (this.searchInpt){
+        param["title"] = this.searchInpt;
+      }
+      let uri = ""
+      if (page){
+        uri = 'system/information/getStrategyInformationListWithAll?pageSize='+page.limit+'&pageNum='+page.page
+      }else {
+        uri = 'system/information/getStrategyInformationListWithAll'
       }
       let that = this;
-      this.$axios.post('system/information/getStrategyInformationList', param, {}).then((res) => {
-        this.$message({
-          message: '攻略获取成功！',
-          type: 'success'
-        });
+      this.$axios.post(uri, param).then((res) => {
         if (res.data.code == 200) {
           that.shareDiaryList = res.data.rows;
           that.total = res.data.total;
+          this.$message({
+            message: '攻略获取成功！',
+            type: 'success'
+          });
         } else {
 
         }
@@ -151,11 +175,12 @@ export default {
         iterator.color = ""
       }
       item.color = "#1badb6"
-      if (item.sortName == '全部') {
-        this.getGlList()
-        return
+      this.cityName = item.sortName;
+      let page = {
+        "page":'1',
+        'limit':this.pageSize
       }
-      this.getGlList(item.sortName)
+      this.getGlList(page)
     },
     getCity() {
       this.$axios.get('system/SortInformation/list', null, {
@@ -173,7 +198,7 @@ export default {
           }
           res.data.rows.unshift(all);
           this.regionList = res.data.rows
-
+          this.cityName="全部"
         }
       }).catch((error) => {
         this.$notify.error({
@@ -182,20 +207,23 @@ export default {
         });
       });
     },
-    searchGl(){
-      let input = this.searchInpt;
-      let param = {
-        'isVideo':"0"
+    searchGl() {
+      let param = {}
+      if (this.searchInpt){
+        param["title"] = this.searchInpt;
+        param["page"] = this.pageNum;
+        param["limit"] = this.pageSize
       }
-      this.$axios.get("/system/information/getStrategyInformationListWithAll",param)
-        .then((data)=>{
+      this.$axios.post("/system/information/getStrategyInformationListWithAll", param)
+        .then((data) => {
           console.log(data)
         })
     }
   },
   mounted() {
-    this.getGlList()
+    this.getGlList({'page':1,'limit':this.pageSize})
     this.getCity();
+    this.searchGl();
   },
 }
 </script>

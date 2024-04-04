@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import index from '@/components/index'
 import login from '@/components/login/login'
 import register from '@/components/register/register'
 import xcgl from '@/components/xcgl/xcgl'
@@ -34,7 +33,10 @@ export default new Router({
     {
       path: '/xcgl',
       name: 'xcgl',
-      component: xcgl
+      component: xcgl,
+      meta: {
+        requiresAuth: true // 标记为需要登录才能访问
+      }
     },
     {
       path: '/glWarehouse',
@@ -70,7 +72,7 @@ export default new Router({
       name: 'strategyDetail',
       component: strategyDetail,
       meta: {
-        requiresAuth: true // 标记为需要登录才能访问
+        // requiresAuth: true // 标记为需要登录才能访问
       }
     },
     {
@@ -80,6 +82,6 @@ export default new Router({
       meta: {
         requiresAuth: true // 标记为需要登录才能访问
       }
-    },
+    }
   ]
 })

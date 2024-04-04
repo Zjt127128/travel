@@ -189,39 +189,14 @@ export default {
         //   prevEl: ".swiper-button-prev"
         // }
       },
-      swiperList: [
-        // {
-        //     imgUrl:
-        //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/9949b04568e4e221516acec29cc780fe.jpg",
-        //     adminHead:
-        //         "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
-        //     expressText: "成都周边游，探索隐匿在城南的千年古城",
-        //     adminName: "去哪儿用户",
-        // },
-        // {
-        //     imgUrl:
-        //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/10cdefaa17898344fa7c660a70e9e499.jpg",
-        //     adminHead:
-        //         "https://qcommons.qunar.com/headshot/headshotsById/232093830.png?s&ssl=true",
-        //     expressText: "湖北多城露营记，去山野中找寻春天的色彩",
-        //     adminName: "北小欧",
-        // },
-        // {
-        //     imgUrl:
-        //         "https://tr-osdcp.qunarzz.com/tr-osd-vs-dapp-ugc/img/ab17f71582d3c98bbbec75fe72001fa1.jpg",
-        //     adminHead:
-        //         "https://qcommons.qunar.com/headshot/headshotsById/127088836.png?s&ssl=true",
-        //     expressText: "丛林秘境与天空之城——美丽而神秘的秘鲁",
-        //     adminName: "贺贺",
-        // },
-      ],
+      swiperList: [],
       regionList: [],
       shareDiaryList: [],
       total: 0,
       pageSize: 10,
       pageNum: 1,
-      hotGl: []
-
+      hotGl: [],
+      cityName: ""
     };
   },
   methods: {
@@ -233,19 +208,19 @@ export default {
         }
       });
     },
-    getGlList(sortName, search) {
-      var param = {
-        'pageSize': 10,
-        'pageNum': this.pageNum,
+    getGlList(page) {
+      let param = {};
+      if (this.cityName && this.cityName != '全部') {
+        param["city"] = this.cityName
       }
-      if (sortName) {
-        param.city = sortName;
-      }
-      if (search) {
-        param.content = search;
+      let uri = ""
+      if (page){
+        uri = 'system/information/getStrategyInformationList?pageSize='+page.limit+'&pageNum='+page.page
+      }else {
+        uri = 'system/information/getStrategyInformationList'
       }
       let that = this;
-      this.$axios.post('system/information/getStrategyInformationList', param, {}).then((res) => {
+      this.$axios.post(uri, param).then((res) => {
         this.$message({
           message: '攻略获取成功！',
           type: 'success'
@@ -254,7 +229,10 @@ export default {
           that.shareDiaryList = res.data.rows;
           that.total = res.data.total;
         } else {
-
+          this.$notify.error({
+            title: '错误',
+            message: '获取列表失败！'
+          });
         }
       }).catch((error) => {
         this.$notify.error({
@@ -276,11 +254,12 @@ export default {
         iterator.color = ""
       }
       item.color = "#1badb6"
-      if (item.sortName == '全部') {
-        this.getGlList()
-        return
+      this.cityName = item.sortName;
+      let page = {
+        'page': 1,
+        'limit': this.pageSize,
       }
-      this.getGlList(item.sortName)
+      this.getGlList(page)
     },
     getCity() {
       this.$axios.get('system/SortInformation/list', null, {
@@ -298,7 +277,7 @@ export default {
           }
           res.data.rows.unshift(all);
           this.regionList = res.data.rows
-
+          this.sortName = '全部'
         }
       }).catch((error) => {
         this.$notify.error({
