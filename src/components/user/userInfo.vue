@@ -182,7 +182,6 @@ export default {
                 if (valid) {
                     this.$axios.put('system/user/profile', this.personEdit).then((res) => {
                         if (res.data.code == 200) {
-                            debugger
                             if (!that.imageUrl.startsWith('http')) {
                                 that.$refs.upload.submit();
                             }

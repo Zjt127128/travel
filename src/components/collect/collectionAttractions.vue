@@ -53,7 +53,6 @@ export default {
                     }
                     iterator.attractionsUrls = imgList;
                 }
-                debugger
                 if(data && data.length > 0){
                   that.activeName = data[0].id
                 }
