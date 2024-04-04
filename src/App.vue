@@ -7,7 +7,10 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    this.$axios.post('/system/visits', null,{})
+  }
 }
 </script>
 
