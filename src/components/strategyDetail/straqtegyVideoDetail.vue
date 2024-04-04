@@ -111,9 +111,8 @@ import "swiper/css/swiper.css";
 import zjtHeader from "@/components/header/header.vue";
 import indexTitle from "@/components/index/title/indexTitle.vue";
 import commentList from "@/components/commentList/commentList.vue";
-import videoPlayer from "@/components/videoPlayer/videoPlayer.vue";
 export default {
-  components: { swiper, swiperSlide, zjtHeader, indexTitle, commentList, videoPlayer},
+  components: { swiper, swiperSlide, zjtHeader, indexTitle, commentList},
   data() {
     return {
       swiperOption: {

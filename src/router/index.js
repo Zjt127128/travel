@@ -82,13 +82,5 @@ export default new Router({
         requiresAuth: true // 标记为需要登录才能访问
       }
     },
-    {
-      path: '/test',
-      name: 'test',
-      component: test,
-      meta: {
-        requiresAuth: true // 标记为需要登录才能访问
-      }
-    }
   ]
 })
