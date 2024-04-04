@@ -10,7 +10,6 @@ import glIndex from '@/components/xcgl/glIndex'
 import glVlog from '@/components/xcgl/glVlog'
 import strategyDetail from "../components/strategyDetail/strategyDetail.vue";
 import straqtegyVideoDetail from "../components/strategyDetail/straqtegyVideoDetail.vue";
-import test from "../components/strategyDetail/test.vue";
 
 
 Vue.use(Router)
