@@ -120,7 +120,6 @@ export default {
             }
             this.$axios.get('system/information/' + that.userId, param).then((res) => {
                 if (res.data.code == 200) {
-                    console.log(res.data.rows);
                     that.shareDiaryList = res.data.rows;
                     that.total = res.data.total;
                 }
@@ -136,10 +135,8 @@ export default {
             this.getList()
         },
         deleteGl(id) {
-            console.log(id);
             let that = this;
             this.$axios.delete('system/strategy/' + id).then((res) => {
-                console.log(res.data);
                 if (res.data.code == 200) {
                     that.getList()
                     this.$notify.success({
@@ -148,7 +145,6 @@ export default {
                     });
                 }
             }).catch((error) => {
-                console.log(error);
                 this.$notify.error({
                     title: '错误',
                     message: '删除收藏失败！'

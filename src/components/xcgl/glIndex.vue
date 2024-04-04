@@ -271,7 +271,6 @@ export default {
                     message: '攻略获取成功！',
                     type: 'success'
                 });
-                console.log(res);
                 if (res.data.code == 200) {
                     that.shareDiaryList = res.data.rows;
                     that.total = res.data.total;
@@ -279,7 +278,6 @@ export default {
 
                 }
             }).catch((error) => {
-                console.log(error);
                 this.$notify.error({
                     title: '错误',
                     message: '获取列表失败！'
@@ -311,7 +309,6 @@ export default {
                     'Content-Type': 'application/json;charset=utf-8'
                 }
             }).then((res) => {
-                console.log(res);
                 if (res.data.code == 200) {
                     for (const iterator of res.data.rows) {
                         iterator.color = ""
@@ -325,7 +322,6 @@ export default {
 
                 }
             }).catch((error) => {
-                console.log(error);
                 this.$notify.error({
                     title: '错误',
                     message: '获取城市列表失败！'
@@ -339,7 +335,6 @@ export default {
         getHotGl(){
             let that = this;
             this.$axios.get("system/information/getCountList", null).then((res)=>{
-                console.log('热门攻略：',res.data);
                 that.hotGl = res.data.rows;
                 let imgUri = [];
                 for (let index in that.hotGl) {
@@ -351,7 +346,7 @@ export default {
                 }
                 that.swiperList = imgUri;
             }).catch((e)=>{
-                console.log(e);
+              this.$message.error('获取热门攻略出错，请重试！');
             })
         }
     },

@@ -160,7 +160,6 @@ export default {
             this.$axios.get('system/user/profile').then((res) => {
                 if (res.data.code == 200) {
                     this.person = res.data.data;
-                    console.log("头像", this.person.avatar);
                     if (this.person.avatar) {
                         this.person.avatar = window.API_BASE_URL + this.person.avatar.substring(1)
                     }
@@ -241,7 +240,6 @@ export default {
 
         },
         uploadSuccess(response, file) {
-            console.log(response);
             this.$notify({
                 title: '成功',
                 message: '用户信息修改成功！',
@@ -252,10 +250,9 @@ export default {
             let that = this;
             this.$axios.get("system/TagInformation/list")
                 .then((res) => {
-                    console.log('标签', res.data);
                     that.tagOption = res.data.rows
                 }).catch((e) => {
-                    console.log(e);
+              this.$message.error('获取标签列表失败，请重试！');
                 })
         }
     },

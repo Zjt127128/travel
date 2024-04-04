@@ -109,13 +109,11 @@ export default {
                         'Content-Type': 'application/json;charset=utf-8'
                     }
                 }).then((res) => {
-                    console.log(res.data.data);
                     if (res.data.code == 200) {
                         that.userInfo = res.data.data
 
                     }
                 }).catch((error) => {
-                    console.log(error);
                     this.$notify.error({
                         title: '错误',
                         message: '获取用户失败！'

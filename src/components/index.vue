@@ -272,7 +272,6 @@ export default {
           message: '攻略获取成功！',
           type: 'success'
         });
-        console.log(res);
         if (res.data.code == 200) {
           that.shareDiaryList = res.data.rows;
           that.total = res.data.total;
@@ -280,7 +279,6 @@ export default {
 
         }
       }).catch((error) => {
-        console.log(error);
         this.$notify.error({
           title: '错误',
           message: '获取列表失败！'
@@ -312,7 +310,6 @@ export default {
           'Content-Type': 'application/json;charset=utf-8'
         }
       }).then((res) => {
-        console.log(res);
         if (res.data.code == 200) {
           for (const iterator of res.data.rows) {
             iterator.color = ""
@@ -326,7 +323,6 @@ export default {
 
         }
       }).catch((error) => {
-        console.log(error);
         this.$notify.error({
           title: '错误',
           message: '获取城市列表失败！'

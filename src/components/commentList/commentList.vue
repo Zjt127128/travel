@@ -140,7 +140,6 @@ export default {
     },
     getUser() {
       this.$axios.get('system/user/profile').then((res) => {
-        console.log(res)
         if (res.data.code == 200) {
           this.user = res.data.data;
           if (this.user.avatar) {
@@ -170,8 +169,6 @@ export default {
       })
     },
     reply_sumbit(item, type){
-      console.log(item)
-      console.log(type)
       let param = {
         strategyId: this.strategyId,
         content: this.childrenContent,

@@ -161,8 +161,6 @@ export default {
   },
   methods: {
     handleFileChange(event) {
-      console.log(event)
-      console.log(event.target.files[0])
       // 获取选择的视频文件
       this.form.video = event.target.files[0];
     },
@@ -195,7 +193,6 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
-        console.log(this.form)
         if (valid) {
           if (this.form.isVideo){
             this.form.isVideo = 1
@@ -203,7 +200,9 @@ export default {
             this.form.isVideo = 0
           }
           this.$axios.post('/system/information',this.form,{}).then(res=>{
-            console.log(res)
+            this.$message.success('提交成功！');
+          }).catch((e)=>{
+            this.$message.error('提交失败！');
           })
         }
       });

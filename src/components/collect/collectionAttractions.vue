@@ -1,9 +1,9 @@
 <template>
     <div class="collectionAttractions">
         <div class="jdContent">
-            <el-collapse v-model="activeName" accordion v-for="item of jdList">
+            <el-collapse v-model="activeName" accordion v-for="item of jdList" :key="item.id">
                 <el-collapse-item :title="item.attractions" :name="item.id">
-                    <el-row style="margin: 20px;margin-right: 0;">  
+                    <el-row style="margin: 20px;margin-right: 0;">
                         <el-col :span="1" :offset="23">
                             <el-popconfirm confirm-button-text='删除' cancel-button-text='取消' icon="el-icon-info"
                                 icon-color="red" :title="'确定删除\'' + item.attractions + '\'这个景点收藏吗？'"
@@ -15,7 +15,7 @@
                     </el-row>
 
                     <el-row :gutter="20">
-                        <el-col :span="6" v-for="iterator of item.attractionsUrls">
+                        <el-col :span="6" v-for="(iterator,index) of item.attractionsUrls" :key="index">
                             <el-image :src="iterator" style="width: 100%;height: 100%;"
                                 :preview-src-list="item.attractionsUrls"></el-image>
                         </el-col>
@@ -44,7 +44,6 @@ export default {
             let that = this
             this.$axios.get('system/attractions/list', null, {
             }).then((res) => {
-                console.log(res.data);
                 let data = JSON.parse(JSON.stringify(res.data.rows))
                 for (let iterator of data) {
                     let imgList = []
@@ -54,9 +53,12 @@ export default {
                     }
                     iterator.attractionsUrls = imgList;
                 }
+                debugger
+                if(data && data.length > 0){
+                  that.activeName = data[0].id
+                }
                 that.jdList = data
             }).catch((error) => {
-                console.log(error);
                 this.$notify.error({
                     title: '错误',
                     message: '获取景点收藏列表失败！'
@@ -66,7 +68,6 @@ export default {
         deleteJd(id) {
             let that = this;
             this.$axios.delete('system/attractions/' + id).then((res) => {
-                console.log(res.data);
                 if (res.data.code == 200) {
                     that.getList()
                     this.$notify.success({
@@ -75,7 +76,6 @@ export default {
                     });
                 }
             }).catch((error) => {
-                console.log(error);
                 this.$notify.error({
                     title: '错误',
                     message: '删除收藏失败！'

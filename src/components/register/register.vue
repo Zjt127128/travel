@@ -106,18 +106,16 @@ export default {
                     'Content-Type': 'application/json;charset=utf-8'
                 }
             }).then((data) => {
-                debugger
-                console.log(data);
                 if (data.data.code == 200) {
                     // window.localStorage.setItem('access_token', data.data.token);
                     this.$router.push({
                         path: '/login'
                     });
                 } else {
-
+                  this.$message.error('注册失败，请重试！');
                 }
             }).catch((error) => {
-                console.log(error);
+              this.$message.error('注册失败，请重试！');
             });
         },
         getCaptchaImage(){
@@ -126,17 +124,14 @@ export default {
                     'Content-Type': 'application/json;charset=utf-8'
                 }
             }).then((data) => {
-                console.log(data);
                 if (data.data.code == 200) {
-                    console.log(data);
                     this.captchaImage = data.data.img
                     this.captchaUuid = data.data.uuid
-                    console.log(this.captchaImage);
                 } else {
                     this.$message.error('验证码获取失败，请重试！');
                 }
             }).catch((error) => {
-                console.log(error);
+                this.$message.error('验证码获取失败，请重试！');
             });
         }
     },
