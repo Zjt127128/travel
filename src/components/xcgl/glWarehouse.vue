@@ -6,7 +6,7 @@
     </div>
     <div class="searchContent">
       <el-input placeholder="搜攻略" v-model="searchInpt" class="input-with-select">
-        <el-button slot="append" icon="el-icon-search" @click="getGlList"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="getGlList()"></el-button>
       </el-input>
       <div class="glList">
         <div class="part_bottom">
@@ -145,7 +145,7 @@ export default {
       if (page){
         uri = 'system/information/getStrategyInformationListWithAll?pageSize='+page.limit+'&pageNum='+page.page
       }else {
-        uri = 'system/information/getStrategyInformationListWithAll'
+        uri = 'system/information/getStrategyInformationListWithAll?pageSize='+this.pageSize+'&pageNum='+1
       }
       let that = this;
       this.$axios.post(uri, param).then((res) => {
