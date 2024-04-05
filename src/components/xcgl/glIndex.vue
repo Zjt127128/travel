@@ -87,13 +87,6 @@
       <div class="glList">
         <div class="part_bottom">
           <div class="diary_title">攻略日记</div>
-          <div class="diary_bar">
-            <div class="destination">城市</div>
-            <div v-for="(item, index) in regionList" :key="index" class="city"
-                 :style="item.color ? 'color:' + item.color : ''" @click="mddChange(item)">
-              {{ item.sortName }}
-            </div>
-          </div>
           <div class="share_area">
             <div class="share_item" v-for="(item, index) in shareDiaryList" :key="index" @click="goTodetial(item)">
               <div class="share_top">
@@ -210,9 +203,6 @@ export default {
     },
     getGlList(page) {
       let param = {};
-      if (this.cityName && this.cityName != '全部') {
-        param["city"] = this.cityName
-      }
       let uri = ""
       if (page){
         uri = 'system/information/getStrategyInformationList?pageSize='+page.limit+'&pageNum='+page.page
@@ -248,18 +238,6 @@ export default {
       } else {
         this.getGlList(this.sortName, this.search)
       }
-    },
-    mddChange(item) {
-      for (const iterator of this.regionList) {
-        iterator.color = ""
-      }
-      item.color = "#1badb6"
-      this.cityName = item.sortName;
-      let page = {
-        'page': 1,
-        'limit': this.pageSize,
-      }
-      this.getGlList(page)
     },
     getCity() {
       this.$axios.get('system/SortInformation/list', null, {

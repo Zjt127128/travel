@@ -143,9 +143,9 @@ export default {
       }
       let uri = ""
       if (page){
-        uri = 'system/information/getStrategyInformationListWithAll?pageSize='+page.limit+'&pageNum='+page.page
+        uri = 'system/information/getStrategyInformationListWithAll'
       }else {
-        uri = 'system/information/getStrategyInformationListWithAll?pageSize='+this.pageSize+'&pageNum='+1
+        uri = 'system/information/getStrategyInformationListWithAll'
       }
       let that = this;
       this.$axios.post(uri, param).then((res) => {
@@ -175,7 +175,7 @@ export default {
         iterator.color = ""
       }
       item.color = "#1badb6"
-      this.cityName = item.sortName;
+      this.cityName = item.id;
       let page = {
         "page":'1',
         'limit':this.pageSize

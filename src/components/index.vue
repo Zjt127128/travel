@@ -37,13 +37,6 @@
       <div class="glList">
         <div class="part_bottom">
           <div class="diary_title">攻略日记</div>
-          <div class="diary_bar">
-            <div class="destination">城市</div>
-            <div v-for="(item, index) in regionList" :key="index" class="city"
-                 :style="item.color ? 'color:' + item.color : ''" @click="mddChange(item)">
-              {{ item.sortName }}
-            </div>
-          </div>
           <div class="share_area">
             <div class="share_item" v-for="(item, index) in shareDiaryList" :key="index" @click="goTodetial(item)">
               <div class="share_top">
