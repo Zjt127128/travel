@@ -202,7 +202,7 @@ export default {
                 } else {
                     that.$notify.error({
                         title: '错误',
-                        message: '用户信息校验失败，请检查输入项！'
+                        message: '用户信息未通过校验，请检查输入项！'
                     });
                     return false;
                 }

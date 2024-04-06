@@ -9,7 +9,7 @@
             <div class="user_info">
               <div class="firt_line_div">
                 <div class="firt_line">
-                  <span class="share_title">{{ item.title }}</span>
+                  <span class="share_title" @click="goGlInfo(item)">{{ item.title }}</span>
                   <div class="tag1_back" v-if="item.tag1"></div>
                 </div>
                 <div class="firt_line_end">
@@ -152,6 +152,14 @@ export default {
           title: '错误',
           message: '删除收藏失败！'
         });
+      });
+    },
+    goGlInfo(item){
+      this.$router.push({
+        path: '/strategyDetail',
+        query: {
+          id: item.strategyId,
+        }
       });
     }
   },

@@ -8,11 +8,11 @@
             <span>{{ item.itemName }}</span>
           </div>
         </div>
-        <div class="top3_swiper_bar_input">
-          <el-input placeholder="搜目的地/攻略" v-model="searchInpt" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search" @click="searchGl"></el-button>
-          </el-input>
-        </div>
+<!--        <div class="top3_swiper_bar_input">-->
+<!--          <el-input placeholder="搜目的地/攻略" v-model="searchInpt" class="input-with-select">-->
+<!--            <el-button slot="append" icon="el-icon-search" @click="searchGl"></el-button>-->
+<!--          </el-input>-->
+<!--        </div>-->
 
       </div>
     </div>
