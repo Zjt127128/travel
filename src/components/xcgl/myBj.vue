@@ -137,7 +137,7 @@ export default {
     </div>
     <div class="content">
       <el-collapse v-model="activeName" accordion>
-        <el-collapse-item :title="item.title" :name="index" v-for="(item,index) of bjData">
+        <el-collapse-item :title="item.title" :name="index" v-for="(item,index) of bjData" :key="item.id">
           <div class="collapseContent">
             <div class="leftBox">
               <el-link class="content">内容:{{ item.content }}</el-link>
